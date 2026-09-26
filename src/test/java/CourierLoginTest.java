@@ -69,4 +69,15 @@ public class CourierLoginTest {
         response.then().assertThat().statusCode(400)
                 .and().body("message", is("Недостаточно данных для входа")); // Исправили текст ошибки
     }
+
+    @Test
+    @DisplayName("Ошибка при попытке логина без обязательного поля password")
+    public void loginWithoutPasswordReturnsError() {
+        Courier invalidCourier = new Courier(courier.getLogin(), null, null);
+        Response response = courierClient.login(invalidCourier);
+
+        response.then().assertThat()
+                .statusCode(400)
+                .and().body("message", is("Недостаточно данных для входа"));
+    }
 }
